@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,13 +33,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        lst = (TextView) findViewById(R.id.list);
-        textItemName = (EditText) findViewById(R.id.textItemName);
-        textItemDescription = (EditText) findViewById(R.id.textItemDescription);
-        textBorrowerName = (EditText) findViewById(R.id.textBorrowerName);
-        textBorrowerEmail = (EditText) findViewById(R.id.textBorrowerEmail);
-        dateDateLent = (EditText) findViewById(R.id.dateDateLent);
-        dateReturnDate = (EditText) findViewById(R.id.dateReturnDate);
+        lst = findViewById(R.id.list);
+        textItemName = findViewById(R.id.textItemName);
+        textItemDescription = findViewById(R.id.textItemDescription);
+        textBorrowerName = findViewById(R.id.textBorrowerName);
+        textBorrowerEmail = findViewById(R.id.textBorrowerEmail);
+        dateDateLent = findViewById(R.id.dateDateLent);
+        dateReturnDate = findViewById(R.id.dateReturnDate);
     }
 
     public void addItem (View view) {
@@ -78,23 +79,39 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void findStudent (View view) {
+    public void findItem (View view) {
         ItemsDBHandler dbHandler = new ItemsDBHandler(this, null, null, 1);
         Item item = dbHandler.findHandler(textItemName.getText().toString());
         if (item != null) {
             lst.setText(String.valueOf(item.getItemID()) +" "+ item.getItemName());
+            Toast.makeText(MainActivity.this,
+                    item.getItemName() + " Found", Toast.LENGTH_LONG).show();
+            textItemName.setText("");
+            textItemDescription.setText("");
+            textBorrowerName.setText("");
+            textBorrowerEmail.setText("");
+            dateDateLent.setText("");
+            dateReturnDate.setText("");
         } else {
             lst.setText("No Match Found");
+            Toast.makeText(MainActivity.this,
+                    "No Match Found", Toast.LENGTH_LONG).show();
         }
     }
 
-/*    public void loadStudents(View view) {
+    public void loadItems(View view) {
         ItemsDBHandler dbHandler = new ItemsDBHandler(this, null, null, 1);
         lst.setText(dbHandler.loadHandler());
-        studentid.setText("");
-        studentname.setText("");
+        textItemName.setText("");
+        textItemDescription.setText("");
+        textBorrowerName.setText("");
+        textBorrowerEmail.setText("");
+        dateDateLent.setText("");
+        dateReturnDate.setText("");
+        Toast.makeText(MainActivity.this,
+                "Items Loaded", Toast.LENGTH_LONG).show();
     }
-
+/*
     public void deleteStudent(View view) {
         ItemsDBHandler dbHandler = new ItemsDBHandler(this, null,
                 null, 1);
