@@ -89,14 +89,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 /*    public void loadStudents(View view) {
-        MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
+        ItemsDBHandler dbHandler = new ItemsDBHandler(this, null, null, 1);
         lst.setText(dbHandler.loadHandler());
         studentid.setText("");
         studentname.setText("");
     }
 
     public void deleteStudent(View view) {
-        MyDBHandler dbHandler = new MyDBHandler(this, null,
+        ItemsDBHandler dbHandler = new ItemsDBHandler(this, null,
                 null, 1);
         boolean result = dbHandler.deleteHandler(Integer.parseInt(
                 studentid.getText().toString()));
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateStudent(View view) {
-        MyDBHandler dbHandler = new MyDBHandler(this, null,
+        ItemsDBHandler dbHandler = new ItemsDBHandler(this, null,
                 null, 1);
         boolean result = dbHandler.updateHandler(Integer.parseInt(
                 studentid.getText().toString()), studentname.getText().toString());
