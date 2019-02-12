@@ -73,7 +73,7 @@ public class ItemsDBHandler extends SQLiteOpenHelper {
     public void addHandler(Item item) {
         ContentValues values = new ContentValues();
         // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // On an INSERT, if the ROWID or INTEGER PRIMARY KEY column is not explicitly given a value,
         // then it will be filled automatically with an unused integer
         // values.put(COLUMN_ID, item.getItemID());
