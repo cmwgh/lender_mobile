@@ -13,4 +13,7 @@
     <string name="update">UPDATE</string>
     <string name="load_all_items">Load All Items</string>
     <string name="clear_fields">Clear Fields</string>
+    <string name="show_all_items">Show all items</string>
+    <string name="find_item">Find item</string>
+    <string name="add_item">Add item</string>
 </resources>
