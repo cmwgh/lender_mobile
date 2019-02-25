@@ -41,6 +41,25 @@ public class Item {
     public Item(int itemID,
                 String itemName,
                 String itemDescription,
+                String borrowerName,
+                String borrowerEmail,
+                Date dateLent,
+                Date returnDate
+    ) {
+        super();
+        this.itemID = itemID;
+        this.itemName = itemName;
+        this.itemDescription = itemDescription;
+        this.borrowerName = borrowerName;
+        this.borrowerEmail = borrowerEmail;
+        this.dateLent = dateLent;
+        this.returnDate = returnDate;
+    }
+
+
+    public Item(int itemID,
+                String itemName,
+                String itemDescription,
                 String itemImage, // https://developer.android.com/training/data-storage/files#WriteExternalStorage
                 String borrowerName,
                 String borrowerEmail,

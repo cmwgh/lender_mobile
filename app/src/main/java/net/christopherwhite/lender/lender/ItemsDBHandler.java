@@ -132,6 +132,43 @@ public class ItemsDBHandler extends SQLiteOpenHelper {
         db.close();
         return item;
     }
+
+
+    public Item findByIDHandler(int itemID) {
+        String query = "Select * FROM " + TABLE_NAME +
+                " WHERE " + COLUMN_ID + " IS " + itemID;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Item item = new Item();
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst();
+            item.setItemID(Integer.parseInt(cursor.getString(0)));
+            item.setItemName(cursor.getString(1));
+            item.setItemDescription(cursor.getString(2));
+            item.setItemImage(cursor.getString(3));
+            item.setBorrowerName(cursor.getString(4));
+            item.setBorrowerEmail(cursor.getString(5));
+            try {
+                item.setDateLent(dateFormat.parse(cursor.getString(6)));
+            } catch (ParseException e) {
+                Log.e(TAG, "Parsing DateLent datetime failed", e);
+            }
+            try {
+                item.setReturnDate(dateFormat.parse(cursor.getString(7)));
+            } catch (ParseException e) {
+                Log.e(TAG, "Parsing ReturnDate datetime failed", e);
+            }
+            item.setVerify(cursor.getString(8));
+            cursor.close();
+        } else {
+            item = null;
+        }
+        db.close();
+        return item;
+    }
+
+
     public boolean deleteHandler(int ID) {
         boolean result = false;
         String query = "Select * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = '" + String.valueOf(ID) + "'";
@@ -150,11 +187,27 @@ public class ItemsDBHandler extends SQLiteOpenHelper {
         db.close();
         return result;
     }
-    public boolean updateHandler(int ID, String name) {
+    public boolean updateHandler(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues args = new ContentValues();
-        args.put(COLUMN_ID, ID);
-        args.put(COLUMN_NAME, name);
-        return db.update(TABLE_NAME, args,COLUMN_ID + " = " + ID, null) > 0;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //args.put(COLUMN_ID, ID);
+        args.put(COLUMN_NAME, item.getItemName());
+        args.put(COLUMN_DESCRIPTION, item.getItemDescription());
+        if (item.getItemImage() != ""){
+            args.put(COLUMN_IMAGE, item.getItemImage());
+        } else {
+            args.put(COLUMN_IMAGE, "none");
+        }
+        args.put(COLUMN_BORROWERNAME, item.getBorrowerName());
+        args.put(COLUMN_BORROWEREMAIL, item.getBorrowerEmail());
+        args.put(COLUMN_DATELENT, dateFormat.format(item.getDateLent()));
+        args.put(COLUMN_RETURNDATE, dateFormat.format(item.getReturnDate()));
+        if(item.getVerify()!= ""){
+            args.put(COLUMN_VERIFY, item.getVerify());
+        } else {
+            args.put(COLUMN_VERIFY, "false");
+        }
+        return db.update(TABLE_NAME, args,COLUMN_ID + " = " + item.getItemID(), null) > 0;
     }
 }

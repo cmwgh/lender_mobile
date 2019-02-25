@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Lender</string>
+    <string name="item_name">Item Name</string>
+    <string name="description">Description</string>
+    <string name="borrower_name">Borrower Name</string>
+    <string name="borrower_email">Borrower Email</string>
+    <string name="date_lent">Date Lent</string>
+    <string name="expected_return_date">Expected Return Date</string>
+    <string name="items_list">Items list</string>
+    <string name="add">ADD</string>
+    <string name="find">FIND</string>
+    <string name="delete">DELETE</string>
+    <string name="update">UPDATE</string>
+    <string name="load_all_items">Load All Items</string>
+    <string name="clear_fields">Clear Fields</string>
 </resources>
