@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -70,6 +71,7 @@ public class ItemsDBHandler extends SQLiteOpenHelper {
         db.close();
         return result;
     }
+
     public void addHandler(Item item) {
         ContentValues values = new ContentValues();
         // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -79,7 +79,8 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.all_items:
                                 // User chose the "all_items" item, show the app settings UI...
                                 menuItem.setChecked(true);
-
+                                Intent all_items_intent = new Intent(MainActivity.this, activity_all_items.class);
+                                startActivity(all_items_intent);
                                 drawerLayout.closeDrawers();
                                 return true;
 
