@@ -74,18 +74,43 @@ public class MainActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        // set item as selected to persist highlight
-                        menuItem.setChecked(true);
-
                         FragmentAddItem fragment = new FragmentAddItem();
-                        fragmentTransaction.add(R.id.fragmentForChange, fragment);
-                        fragmentTransaction.commit();
+                        switch (menuItem.getItemId()) {
+                            case R.id.all_items:
+                                // User chose the "all_items" item, show the app settings UI...
+                                menuItem.setChecked(true);
 
-                        // close drawer when item is tapped
-                        drawerLayout.closeDrawers();
-                        // fragmentForChange
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
+                                drawerLayout.closeDrawers();
+                                return true;
+
+                            case R.id.add_item:
+                                // User chose the "add_item" action, mark the current item
+                                menuItem.setChecked(true);
+                                Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
+                                startActivity(intent);
+                                // break;
+                                drawerLayout.closeDrawers();
+                                return true;
+
+                            case R.id.find_item:
+                                // User chose the "add_item" action, mark the current item
+                                menuItem.setChecked(true);
+
+                                drawerLayout.closeDrawers();
+                                return true;
+
+                            default:
+                                // set item as selected to persist highlight
+                                menuItem.setChecked(true);
+
+                                // close drawer when item is tapped
+                                drawerLayout.closeDrawers();
+                                // fragmentForChange
+                                // Add code here to update the UI based on the item selected
+                                // For example, swap UI fragments here
+                        }
+
+
 
                         return true;
                     }
