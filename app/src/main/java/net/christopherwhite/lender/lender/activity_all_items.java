@@ -78,7 +78,7 @@ public class activity_all_items extends AppCompatActivity implements RecyclerVie
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(this, ItemViewActivity.class);
-        String message = adapter.getItem(position);
+        int message = position;
         intent.putExtra(ITEM_VIEW, message);
         startActivity(intent);
         // Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();

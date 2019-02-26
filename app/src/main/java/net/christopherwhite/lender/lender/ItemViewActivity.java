@@ -24,7 +24,10 @@ public class ItemViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_view);
+        setContentView(R.layout.content_item_view);
+
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -32,12 +35,11 @@ public class ItemViewActivity extends AppCompatActivity {
         String message = intent.getStringExtra(activity_all_items.ITEM_VIEW);
 
         ItemsDBHandler dbHandler = new ItemsDBHandler(this, null, null, 1);
-        Item item = dbHandler.findHandler(message);
+        Item item = dbHandler.findByIDHandler(1);
 
         if (item != null) {
-
-            Toast.makeText(this,
-                    item.getItemName() + " Found", Toast.LENGTH_LONG).show();
+/*            Toast.makeText(this,
+                    item.getItemName() + " Found", Toast.LENGTH_LONG).show();*/
 
             textItemName.setText(item.getItemName());
             textItemDescription.setText(item.getItemDescription());
@@ -51,7 +53,7 @@ public class ItemViewActivity extends AppCompatActivity {
             Toast.makeText(this,
                     "No Match Found", Toast.LENGTH_LONG).show();
         }
-        
+
     }
 
 
