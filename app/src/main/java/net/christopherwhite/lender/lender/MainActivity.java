@@ -1,27 +1,23 @@
 package net.christopherwhite.lender.lender;
 
-//werk voor de boek
-
-import android.app.DatePickerDialog;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,10 +25,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "";
+    public static final String ADD_ITEM = "net.christopherwhite.lender.lender.ADDITEM";
+
     TextView lst;
     TextView text_View_Id;
     EditText textItemName;
@@ -51,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         drawerLayout = findViewById(R.id.drawer_layout);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         lst = findViewById(R.id.list);
         text_View_Id = findViewById(R.id.textViewId);
@@ -74,9 +76,14 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // set item as selected to persist highlight
                         menuItem.setChecked(true);
+
+                        FragmentAddItem fragment = new FragmentAddItem();
+                        fragmentTransaction.add(R.id.fragmentForChange, fragment);
+                        fragmentTransaction.commit();
+
                         // close drawer when item is tapped
                         drawerLayout.closeDrawers();
-
+                        // fragmentForChange
                         // Add code here to update the UI based on the item selected
                         // For example, swap UI fragments here
 
@@ -85,7 +92,28 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    /** Called when the user taps the Add button */
+    public void addItemIntent(View view) {
+        Intent intent = new Intent(this, AddItemActivity.class);
+        EditText editText = (EditText) findViewById(R.id.textItemName);
+        String message = editText.getText().toString();
+        intent.putExtra(ADD_ITEM, message);
+        startActivity(intent);
+
+    }
+
     public void addItem (View view) {
+        if(TextUtils.isEmpty(textItemName.getText())) {
+            Toast.makeText(MainActivity.this,
+                    "Mandatory fields must be filled in", Toast.LENGTH_LONG).show();
+        } else if (TextUtils.isEmpty(textBorrowerName.getText())){
+            Toast.makeText(MainActivity.this,
+                    "Mandatory fields must be filled in", Toast.LENGTH_LONG).show();
+        } else if (TextUtils.isEmpty(textBorrowerEmail.getText())) {
+            Toast.makeText(MainActivity.this,
+                    "Mandatory fields must be filled in", Toast.LENGTH_LONG).show();
+        }
+        else {
         ItemsDBHandler dbHandler = new ItemsDBHandler(this, null, null, 1);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -119,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
         textBorrowerEmail.setText("");
         dateDateLent.setText("");
         dateReturnDate.setText("");
+        }
+
 
     }
 
@@ -158,27 +188,34 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this,
                 lst.getLineCount()-1 +" Items Loaded", Toast.LENGTH_LONG).show();
     }
-/*
+
     public void deleteItem(View view) {
-        ItemsDBHandler dbHandler = new ItemsDBHandler(this, null,
-                null, 1);
-        boolean result = dbHandler.deleteHandler(Integer.parseInt(
-                itemId.getText().toString()));
-        if (result) {
-            textItemName.setText("");
-            textItemDescription.setText("");
-            textBorrowerName.setText("");
-            textBorrowerEmail.setText("");
-            dateDateLent.setText("");
-            dateReturnDate.setText("");
+        if (text_View_Id != null) {
+            ItemsDBHandler dbHandler = new ItemsDBHandler(this, null,
+                    null, 1);
+            boolean result = dbHandler.deleteHandler(Integer.parseInt(
+                    text_View_Id.getText().toString()));
+            if (result) {
+                Toast.makeText(MainActivity.this,
+                        textItemName.getText().toString() + " has been removed", Toast.LENGTH_LONG).show();
+                textItemDescription.setText("");
+                textBorrowerName.setText("");
+                textBorrowerEmail.setText("");
+                dateDateLent.setText("");
+                dateReturnDate.setText("");
+                lst.setText("");
+                textItemName.setText("");
+                text_View_Id.setText("");
+            } else
+                Toast.makeText(MainActivity.this,
+                        "Item Not Found", Toast.LENGTH_LONG).show();
+        }else {
             Toast.makeText(MainActivity.this,
-            Integer.parseInt(
-                itemId.getText().toString()) + " Item Deleted", Toast.LENGTH_LONG).show();
-        } else
-            Toast.makeText(MainActivity.this,
-            "Item Not Found", Toast.LENGTH_LONG).show();
+                    "No Item Selected", Toast.LENGTH_LONG).show();
+        }
     }
-*/
+
+
     public void updateItem(View view) {
         if (text_View_Id != null) {
             ItemsDBHandler dbHandler = new ItemsDBHandler(this, null,
