@@ -17,4 +17,5 @@
     <string name="find_item">Find item</string>
     <string name="add_item">Add item</string>
     <string name="title_activity_all_items">activity_all_items</string>
+    <string name="title_activity_item_view">ItemViewActivity</string>
 </resources>

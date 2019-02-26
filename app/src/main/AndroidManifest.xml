@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
+            android:name=".ItemViewActivity"
+            android:label="@string/title_activity_item_view"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
             android:name=".activity_all_items"
             android:label="@string/title_activity_all_items"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".AddItemActivity"
             android:parentActivityName=".MainActivity">

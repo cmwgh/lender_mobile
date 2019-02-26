@@ -125,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
         String message = editText.getText().toString();
         intent.putExtra(ADD_ITEM, message);
         startActivity(intent);
-
     }
 
     public void addItem (View view) {
