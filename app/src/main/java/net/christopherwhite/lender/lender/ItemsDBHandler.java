@@ -7,11 +7,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ItemsDBHandler extends SQLiteOpenHelper {
@@ -75,10 +73,9 @@ public class ItemsDBHandler extends SQLiteOpenHelper {
     }
 
     public List<Item> loadAllHandler() {
-        ArrayList<Item> items = new ArrayList<>();
-        String result = "";
+        List<Item> items = new ArrayList<>();
         String query = "Select * FROM " + TABLE_NAME;
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Item item = new Item();
@@ -106,6 +103,7 @@ public class ItemsDBHandler extends SQLiteOpenHelper {
         db.close();
         return items;
     }
+
 
     public void addHandler(Item item) {
         ContentValues values = new ContentValues();
