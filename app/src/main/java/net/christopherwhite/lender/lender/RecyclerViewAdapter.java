@@ -7,16 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private List<String> mData;
+    private List<Item> mData;
+    // private List<String> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    RecyclerViewAdapter(Context context, List<String> data) {
+    RecyclerViewAdapter(Context context, List<Item> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -31,8 +33,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String item = mData.get(position);
-        holder.myTextView.setText(item);
+        Item item = mData.get(position);
+        holder.myTextView.setText(item.getItemName());
     }
 
     // total number of rows
@@ -59,8 +61,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     // convenience method for getting data at click position
-    String getItem(int id) {
-        return mData.get(id);
+    int getItem(int id) {
+        return mData.indexOf(id);
     }
 
     // allows clicks events to be caught

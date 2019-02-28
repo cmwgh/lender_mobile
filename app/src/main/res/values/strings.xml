@@ -18,4 +18,5 @@
     <string name="add_item">Add item</string>
     <string name="title_activity_all_items">activity_all_items</string>
     <string name="title_activity_item_view">ItemViewActivity</string>
+    <string name="enter_quantity">Enter Quantity</string>
 </resources>

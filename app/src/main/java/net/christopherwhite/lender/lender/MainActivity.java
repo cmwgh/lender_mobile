@@ -2,6 +2,7 @@ package net.christopherwhite.lender.lender;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -79,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.all_items:
                                 // User chose the "all_items" item, show the app settings UI...
                                 menuItem.setChecked(true);
-                                Intent all_items_intent = new Intent(MainActivity.this, activity_all_items.class);
+                                // Intent all_items_intent = new Intent(MainActivity.this, activity_all_items.class);
+                                Intent all_items_intent = new Intent(MainActivity.this, ItemViewActivity.class);
                                 startActivity(all_items_intent);
                                 drawerLayout.closeDrawers();
                                 return true;
@@ -139,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                     "Mandatory fields must be filled in", Toast.LENGTH_LONG).show();
         }
         else {
-        ItemsDBHandler dbHandler = new ItemsDBHandler(this, null, null, 1);
+        ItemsDBHandler dbHandler = new ItemsDBHandler(this);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         String itemName = textItemName.getText().toString();
@@ -178,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void findItem (View view) {
-        ItemsDBHandler dbHandler = new ItemsDBHandler(this, null, null, 1);
+        ItemsDBHandler dbHandler = new ItemsDBHandler(this);
         Item item = dbHandler.findHandler(textItemName.getText().toString());
         if (item != null) {
             lst.setText(String.valueOf(item.getItemID()) +" "+ item.getItemName());
@@ -202,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadItems(View view) {
-        ItemsDBHandler dbHandler = new ItemsDBHandler(this, null, null, 1);
+        ItemsDBHandler dbHandler = new ItemsDBHandler(this);
         lst.setText(dbHandler.loadHandler());
         textItemName.setText("");
         textItemDescription.setText("");
@@ -216,8 +218,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void deleteItem(View view) {
         if (text_View_Id != null) {
-            ItemsDBHandler dbHandler = new ItemsDBHandler(this, null,
-                    null, 1);
+            ItemsDBHandler dbHandler = new ItemsDBHandler(this);
             boolean result = dbHandler.deleteHandler(Integer.parseInt(
                     text_View_Id.getText().toString()));
             if (result) {
@@ -243,8 +244,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateItem(View view) {
         if (text_View_Id != null) {
-            ItemsDBHandler dbHandler = new ItemsDBHandler(this, null,
-                    null, 1);
+            ItemsDBHandler dbHandler = new ItemsDBHandler(this);
 
 
 

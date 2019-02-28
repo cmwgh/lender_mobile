@@ -10,7 +10,9 @@ import android.util.Log;
 import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ItemsDBHandler extends SQLiteOpenHelper {
     //information of database
@@ -30,8 +32,8 @@ public class ItemsDBHandler extends SQLiteOpenHelper {
 
 
     //initialize the database
-    public ItemsDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+    public ItemsDBHandler(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -70,6 +72,39 @@ public class ItemsDBHandler extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return result;
+    }
+
+    public List<Item> loadAllHandler() {
+        ArrayList<Item> items = new ArrayList<>();
+        String result = "";
+        String query = "Select * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Item item = new Item();
+        while (cursor.moveToNext()) {
+                item.setItemID(Integer.parseInt(cursor.getString(0)));
+                item.setItemName(cursor.getString(1));
+                item.setItemDescription(cursor.getString(2));
+                item.setItemImage(cursor.getString(3));
+                item.setBorrowerName(cursor.getString(4));
+                item.setBorrowerEmail(cursor.getString(5));
+                try {
+                    item.setDateLent(dateFormat.parse(cursor.getString(6)));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing DateLent datetime failed", e);
+                }
+                try {
+                    item.setReturnDate(dateFormat.parse(cursor.getString(7)));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing ReturnDate datetime failed", e);
+                }
+                item.setVerify(cursor.getString(8));
+            }
+            items.add(item);
+        cursor.close();
+        db.close();
+        return items;
     }
 
     public void addHandler(Item item) {
