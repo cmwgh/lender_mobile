@@ -10,9 +10,11 @@ import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ItemsDBHandler extends SQLiteOpenHelper {
+
     //information of database
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "itemsDB.db";
@@ -79,29 +81,32 @@ public class ItemsDBHandler extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Item item = new Item();
-        while (cursor.moveToNext()) {
-                item.setItemID(Integer.parseInt(cursor.getString(0)));
-                item.setItemName(cursor.getString(1));
-                item.setItemDescription(cursor.getString(2));
-                item.setItemImage(cursor.getString(3));
-                item.setBorrowerName(cursor.getString(4));
-                item.setBorrowerEmail(cursor.getString(5));
+        if(cursor.moveToFirst()){
+            do {
+                int id = Integer.parseInt(cursor.getString(0));
+                String name = cursor.getString(1);
+                String description = cursor.getString(2);
+                String image = cursor.getString(3);
+                String borrowerName = cursor.getString(4);
+                String borrowerEmail = cursor.getString(5);
+                Date dateLent = null;
+                Date dateReturn = null;
                 try {
-                    item.setDateLent(dateFormat.parse(cursor.getString(6)));
+                    dateLent = dateFormat.parse(cursor.getString(6));
                 } catch (ParseException e) {
                     Log.e(TAG, "Parsing DateLent datetime failed", e);
                 }
                 try {
-                    item.setReturnDate(dateFormat.parse(cursor.getString(7)));
+                    dateReturn = dateFormat.parse(cursor.getString(7));
                 } catch (ParseException e) {
                     Log.e(TAG, "Parsing ReturnDate datetime failed", e);
                 }
-                item.setVerify(cursor.getString(8));
-            }
-            items.add(item);
-        cursor.close();
-        db.close();
+                String verify = cursor.getString(8);
+                items.add(new Item(id, name, description, image, borrowerName, borrowerEmail, dateLent, dateReturn, verify));
+            }while (cursor.moveToNext());
+        }        cursor.close();
         return items;
+
     }
 
 

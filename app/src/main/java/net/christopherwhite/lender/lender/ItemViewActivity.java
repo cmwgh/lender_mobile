@@ -58,10 +58,10 @@ public class ItemViewActivity extends AppCompatActivity {
         final EditText nameField = (EditText)subView.findViewById(R.id.enter_name);
         final EditText quantityField = (EditText)subView.findViewById(R.id.enter_quantity);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Add new product");
+        builder.setTitle("Add new item");
         builder.setView(subView);
         builder.create();
-        builder.setPositiveButton("ADD PRODUCT", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("ADD ITEM", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 final String name = nameField.getText().toString();
