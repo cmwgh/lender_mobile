@@ -16,7 +16,7 @@ import java.util.List;
 public class ItemsDBHandler extends SQLiteOpenHelper {
 
     //information of database
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "itemsDB.db";
     public static final String TABLE_NAME = "Item";
     public static final String COLUMN_ID = "ItemID";
@@ -28,7 +28,8 @@ public class ItemsDBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_DATELENT = "DateLent";
     public static final String COLUMN_RETURNDATE = "ReturnDate";
     public static final String COLUMN_VERIFY = "Verify";
-    public static final String TAG = "Error";
+    public static final String COLUMN_ARCHIVE = "Archive";
+    public static final String TAG = "DATABASE";
 
 
     //initialize the database
@@ -47,8 +48,9 @@ public class ItemsDBHandler extends SQLiteOpenHelper {
                 COLUMN_BORROWEREMAIL + " TEXT, " +
                 COLUMN_DATELENT + " DATE, " +
                 COLUMN_RETURNDATE + " DATE, " +
-                COLUMN_VERIFY + " TEXT " +
-                ")";
+                COLUMN_VERIFY + " TEXT, " +
+                COLUMN_ARCHIVE + " INTEGER DEFAULT 0 " +
+                " ) ";
         db.execSQL(CREATE_TABLE);
     }
     @Override
@@ -76,7 +78,7 @@ public class ItemsDBHandler extends SQLiteOpenHelper {
 
     public List<Item> loadAllHandler() {
         List<Item> items = new ArrayList<>();
-        String query = "Select * FROM " + TABLE_NAME;
+        String query = "Select * FROM " + TABLE_NAME + " WHERE " + COLUMN_ARCHIVE + " = 0";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -102,18 +104,54 @@ public class ItemsDBHandler extends SQLiteOpenHelper {
                     Log.e(TAG, "Parsing ReturnDate datetime failed", e);
                 }
                 String verify = cursor.getString(8);
-                items.add(new Item(id, name, description, image, borrowerName, borrowerEmail, dateLent, dateReturn, verify));
+                int archive = Integer.parseInt(cursor.getString(9));
+                items.add(new Item(id, name, description, image, borrowerName, borrowerEmail, dateLent, dateReturn, verify, archive));
             }while (cursor.moveToNext());
         }        cursor.close();
+        db.close();
         return items;
-
     }
 
+    public List<Item> loadAllArchivedHandler() {
+        List<Item> items = new ArrayList<>();
+        String query = "Select * FROM " + TABLE_NAME + " WHERE " + COLUMN_ARCHIVE + " = 1";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Item item = new Item();
+        if(cursor.moveToFirst()){
+            do {
+                int id = Integer.parseInt(cursor.getString(0));
+                String name = cursor.getString(1);
+                String description = cursor.getString(2);
+                String image = cursor.getString(3);
+                String borrowerName = cursor.getString(4);
+                String borrowerEmail = cursor.getString(5);
+                Date dateLent = null;
+                Date dateReturn = null;
+                try {
+                    dateLent = dateFormat.parse(cursor.getString(6));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing DateLent datetime failed", e);
+                }
+                try {
+                    dateReturn = dateFormat.parse(cursor.getString(7));
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing ReturnDate datetime failed", e);
+                }
+                String verify = cursor.getString(8);
+                int archive = Integer.parseInt(cursor.getString(9));
+                items.add(new Item(id, name, description, image, borrowerName, borrowerEmail, dateLent, dateReturn, verify, archive));
+            }while (cursor.moveToNext());
+        }        cursor.close();
+        db.close();
+        return items;
+    }
 
     public void addHandler(Item item) {
         ContentValues values = new ContentValues();
         // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         // On an INSERT, if the ROWID or INTEGER PRIMARY KEY column is not explicitly given a value,
         // then it will be filled automatically with an unused integer
         // values.put(COLUMN_ID, item.getItemID());
@@ -227,6 +265,22 @@ public class ItemsDBHandler extends SQLiteOpenHelper {
         db.close();
         return result;
     }
+
+
+    public boolean archiveHandler(int ID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues args = new ContentValues();
+        args.put(COLUMN_ARCHIVE, 1);
+        return db.update(TABLE_NAME, args,COLUMN_ID + " = " + ID, null) > 0;
+    }
+
+    public boolean unArchiveHandler(int ID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues args = new ContentValues();
+        args.put(COLUMN_ARCHIVE, 0);
+        return db.update(TABLE_NAME, args,COLUMN_ID + " = " + ID, null) > 0;
+    }
+
     public boolean updateHandler(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues args = new ContentValues();

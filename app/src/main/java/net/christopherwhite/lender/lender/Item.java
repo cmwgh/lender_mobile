@@ -18,6 +18,7 @@ public class Item {
     private Date dateLent;
     private Date returnDate;
     private String verify;
+    private int archive = 0;
 
     // constructors
     public Item() {}
@@ -65,7 +66,8 @@ public class Item {
                 String borrowerEmail,
                 Date dateLent,
                 Date returnDate,
-                String verify) {
+                String verify,
+                int archive) {
         this.itemID = itemID;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
@@ -75,6 +77,7 @@ public class Item {
         this.dateLent = dateLent;
         this.returnDate = returnDate;
         this.verify = verify;
+        this.archive = archive;
     }
 
 
@@ -151,5 +154,21 @@ public class Item {
 
     public void setVerify(String verify) {
         this.verify = verify;
+    }
+
+    public int getArchive() {
+        return archive;
+    }
+
+    public void setArchive(int archive) {
+        this.archive = archive;
+    }
+
+    public boolean getArchiveBoolean() {
+        if (this.getArchive() == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

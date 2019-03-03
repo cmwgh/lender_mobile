@@ -1,21 +1,17 @@
 package net.christopherwhite.lender.lender;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
-
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,20 +19,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder>{
-    private static final String TAG = ItemAdapter.class.getSimpleName();
+public class ItemArchiveAdapter extends RecyclerView.Adapter<ItemViewHolder>{
+    private static final String TAG = ItemArchiveAdapter.class.getSimpleName();
     private Context context;
     private List<Item> listItems;
     private ItemsDBHandler mDatabase;
 
-    public ItemAdapter(Context context, List<Item> listItems) {
+    public ItemArchiveAdapter(Context context, List<Item> listItems) {
         this.context = context;
         this.listItems = listItems;
         mDatabase = new ItemsDBHandler(context);
     }
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.archive_item_list_layout, parent, false);
         return new ItemViewHolder(view);
     }
     @Override
@@ -53,7 +49,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder>{
             @Override
             public void onClick(View view) {
                 //delete row from database
-                mDatabase.archiveHandler(singleItem.getItemID());
+                mDatabase.unArchiveHandler(singleItem.getItemID());
                 //refresh the activity page.
                 ((Activity)context).finish();
                 context.startActivity(((Activity) context).getIntent());
@@ -89,44 +85,16 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder>{
         builder.setTitle("Edit Item");
         builder.setView(subView);
         builder.create();
-        builder.setPositiveButton("EDIT ITEM", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("UnArchive ITEM", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                final String name = nameField.getText().toString();
-                final String description = descriptionField.getText().toString();
-                final String borrower = borrowerName.getText().toString();
-                final String borrowerMail = borrowerEmail.getText().toString();
-                Date date = new Date();
-                Date dateLent = date;
+                mDatabase.unArchiveHandler(item.getItemID());
 
-                try {
-                    dateLent = dateFormat.parse(dateDateLent.getText().toString());
-                } catch (ParseException e) {
-                    Log.e(TAG, "Parsing DateLent datetime failed", e);
-                }
-
-                Calendar cal = Calendar.getInstance();
-                cal.add(Calendar.YEAR, 1);
-                Date returnDate = cal.getTime();
-                try {
-                    returnDate = dateFormat.parse(dateReturnDate.getText().toString());
-                } catch (ParseException e) {
-                    Log.e(TAG, "Parsing ReturnDate datetime failed", e);
-                }
-
-
-                if(TextUtils.isEmpty(name)){
-                    Toast.makeText(context, "Something went wrong. Check your input values", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    Toast.makeText(context, "Updated (not really)", Toast.LENGTH_LONG).show();
-                    mDatabase.updateHandler(new Item(item.getItemID(), name, description, borrower, borrowerMail, dateLent, returnDate));
-                    //refresh the activity
+                    Toast.makeText(context, "Item returned to active list", Toast.LENGTH_LONG).show();
                     ((Activity)context).finish();
                     context.startActivity(((Activity)context).getIntent());
                 }
-            }
+
         });
         builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override

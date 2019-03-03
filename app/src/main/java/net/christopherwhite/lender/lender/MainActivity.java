@@ -102,6 +102,15 @@ public class MainActivity extends AppCompatActivity {
                                 drawerLayout.closeDrawers();
                                 return true;
 
+                            case R.id.show_archived_items:
+                                // User chose the "view archived items" item, show the app settings UI...
+                                menuItem.setChecked(true);
+                                // Intent all_items_intent = new Intent(MainActivity.this, activity_all_items.class);
+                                Intent archived_items_intent = new Intent(MainActivity.this, ArchivedItemsViewActivity.class);
+                                startActivity(archived_items_intent);
+                                drawerLayout.closeDrawers();
+                                return true;
+
                             default:
                                 // set item as selected to persist highlight
                                 menuItem.setChecked(true);
@@ -142,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
         ItemsDBHandler dbHandler = new ItemsDBHandler(this);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
         String itemName = textItemName.getText().toString();
         String itemDescription = textItemDescription.getText().toString();
@@ -240,7 +249,55 @@ public class MainActivity extends AppCompatActivity {
                     "No Item Selected", Toast.LENGTH_LONG).show();
         }
     }
+    public void archiveItem(View view) {
+        if (text_View_Id != null) {
+            ItemsDBHandler dbHandler = new ItemsDBHandler(this);
+            boolean result = dbHandler.archiveHandler(Integer.parseInt(
+                    text_View_Id.getText().toString()));
+            if (result) {
+                Toast.makeText(MainActivity.this,
+                        textItemName.getText().toString() + " has been archived", Toast.LENGTH_LONG).show();
+                textItemDescription.setText("");
+                textBorrowerName.setText("");
+                textBorrowerEmail.setText("");
+                dateDateLent.setText("");
+                dateReturnDate.setText("");
+                lst.setText("");
+                textItemName.setText("");
+                text_View_Id.setText("");
+            } else
+                Toast.makeText(MainActivity.this,
+                        "Item Not Found", Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(MainActivity.this,
+                    "No Item Selected", Toast.LENGTH_LONG).show();
+        }
+    }
 
+    public void unArchiveItem(View view) {
+        if (text_View_Id != null) {
+            ItemsDBHandler dbHandler = new ItemsDBHandler(this);
+            boolean result = dbHandler.unArchiveHandler(Integer.parseInt(
+                    text_View_Id.getText().toString()));
+            if (result) {
+                Toast.makeText(MainActivity.this,
+                        textItemName.getText().toString() + " has been un-archived", Toast.LENGTH_LONG).show();
+                textItemDescription.setText("");
+                textBorrowerName.setText("");
+                textBorrowerEmail.setText("");
+                dateDateLent.setText("");
+                dateReturnDate.setText("");
+                lst.setText("");
+                textItemName.setText("");
+                text_View_Id.setText("");
+            } else
+                Toast.makeText(MainActivity.this,
+                        "Item Not Found", Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(MainActivity.this,
+                    "No Item Selected", Toast.LENGTH_LONG).show();
+        }
+    }
 
     public void updateItem(View view) {
         if (text_View_Id != null) {
@@ -273,6 +330,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (ParseException e) {
                 Log.e(TAG, "Parsing ReturnDate datetime failed", e);
             }
+
 
 
             Item updateItem = new Item(itemId,itemName,itemDescription,borrowerName,borrowerEmail,dateLent,returnDate);

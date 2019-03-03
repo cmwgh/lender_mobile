@@ -4,12 +4,13 @@
     <string name="description">Description</string>
     <string name="borrower_name">Borrower Name</string>
     <string name="borrower_email">Borrower Email</string>
-    <string name="date_lent">Date Lent</string>
-    <string name="expected_return_date">Expected Return Date</string>
+    <string name="date_lent">Date Lent (dd-mm-yyyy)</string>
+    <string name="expected_return_date">Expected Return Date (dd-mm-yyyy)</string>
     <string name="items_list">Items list</string>
     <string name="add">ADD</string>
     <string name="find">FIND</string>
     <string name="delete">DELETE</string>
+    <string name="archive">ARCHIVE</string>
     <string name="update">UPDATE</string>
     <string name="load_all_items">Load All Items</string>
     <string name="clear_fields">Clear Fields</string>
@@ -18,5 +19,7 @@
     <string name="add_item">Add item</string>
     <string name="title_activity_all_items">activity_all_items</string>
     <string name="title_activity_item_view">ItemViewActivity</string>
+    <string name="title_activity_archived_items">ArchivedItemViewActivity</string>
     <string name="enter_quantity">Enter Quantity</string>
+    <string name="show_archived_items">View Archived Items</string>
 </resources>
