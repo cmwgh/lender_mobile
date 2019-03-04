@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.constraint.ConstraintLayout
     android:background="?attr/colorPrimary"
     android:theme="@style/ThemeOverlay.AppCompat.Light"
     android:layout_width="match_parent"
@@ -160,7 +159,7 @@
     <TextView
         android:id="@+id/list"
         android:layout_width="307dp"
-        android:layout_height="166dp"
+        android:layout_height="108dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -174,7 +173,7 @@
         app:layout_constraintHorizontal_bias="0.431"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.723" />
+        app:layout_constraintVertical_bias="0.642" />
 
     <Button
         android:id="@+id/btnadd"
@@ -255,10 +254,10 @@
         android:text="@string/load_all_items"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.164"
+        app:layout_constraintHorizontal_bias="0.145"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.854" />
+        app:layout_constraintVertical_bias="0.761" />
 
     <Button
         android:id="@+id/buttonclear"
@@ -275,7 +274,7 @@
         app:layout_constraintHorizontal_bias="0.796"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.854" />
+        app:layout_constraintVertical_bias="0.761" />
 
     <FrameLayout
         android:id="@+id/fragmentForChange"
@@ -292,19 +291,42 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.854"
         />
-<!--
-    <fragment
-        android:id="@+id/fragment_addItem"
-        android:name="net.christopherwhite.lender.lender.FragmentAddItem"
-        android:layout_width="match_parent"
+
+    <Button
+        android:id="@+id/take_pic_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="dispatchTakePictureIntent"
+        android:text="Picture"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.142"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.929" />
--->
+        app:layout_constraintVertical_bias="0.956" />
+
+    <ImageView
+        android:id="@+id/myImageView"
+        android:layout_width="125dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+    <!--
+        <fragment
+            android:id="@+id/fragment_addItem"
+            android:name="net.christopherwhite.lender.lender.FragmentAddItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.929" />
+    -->
 
 </android.support.constraint.ConstraintLayout>
 

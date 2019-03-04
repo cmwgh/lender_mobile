@@ -2,10 +2,16 @@ package net.christopherwhite.lender.lender;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -19,9 +25,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,6 +41,9 @@ import static android.provider.AlarmClock.EXTRA_MESSAGE;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "";
     public static final String ADD_ITEM = "net.christopherwhite.lender.lender.ADDITEM";
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    String currentPhotoPath;
 
     TextView lst;
     TextView text_View_Id;
@@ -41,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     EditText textBorrowerEmail;
     EditText dateDateLent;
     EditText dateReturnDate;
+    ImageView imageView;
 
     private DrawerLayout drawerLayout;
 
@@ -63,12 +76,18 @@ public class MainActivity extends AppCompatActivity {
         textBorrowerEmail = findViewById(R.id.textBorrowerEmail);
         dateDateLent = findViewById(R.id.dateDateLent);
         dateReturnDate = findViewById(R.id.dateReturnDate);
+        imageView = findViewById(R.id.myImageView);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
+        ColorDrawable colorDrawable = new ColorDrawable(
+                Color.parseColor("#4285f4"));
+        actionbar.setBackgroundDrawable(colorDrawable);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+
+
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
@@ -86,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                                 drawerLayout.closeDrawers();
                                 return true;
 
-                            case R.id.add_item:
+                            /*case R.id.add_item:
                                 // User chose the "add_item" action, mark the current item
                                 menuItem.setChecked(true);
                                 Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
@@ -100,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                                 menuItem.setChecked(true);
 
                                 drawerLayout.closeDrawers();
-                                return true;
+                                return true;*/
 
                             case R.id.show_archived_items:
                                 // User chose the "view archived items" item, show the app settings UI...
@@ -127,6 +146,74 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+    }
+
+/*
+
+    public void dispatchTakePictureIntent(View view) {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+*/
+
+    public void dispatchTakePictureIntent(View view) {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        Log.v(TAG, "-- Start take picture intent --");
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+                Log.v(TAG, "photoURI —  " + photoFile.toString());
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            // ...
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "net.christopherwhite.lender.lender.fileprovider",
+                        photoFile);
+                Log.v(TAG, "photoURI —  " + photoURI.toString());
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+
+            }
+        }
+    }
+
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imageView.setImageBitmap(imageBitmap);
+        }
+    }
+
+
+
+    public File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
     /** Called when the user taps the Add button */
@@ -360,6 +447,7 @@ public class MainActivity extends AppCompatActivity {
                             "No Item Selected", Toast.LENGTH_LONG).show();
         }
 }
+
 
 
     public void clearFields(View view) {

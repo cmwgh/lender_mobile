@@ -27,12 +27,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class ItemViewActivity extends AppCompatActivity {
+public class ItemViewActivity extends MainActivity {
     private static final String TAG = ItemViewActivity.class.getSimpleName();
     private ItemsDBHandler mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_item_view);
         FrameLayout fLayout = (FrameLayout) findViewById(R.id.activity_to_do);
         RecyclerView itemView = (RecyclerView)findViewById(R.id.product_list);
