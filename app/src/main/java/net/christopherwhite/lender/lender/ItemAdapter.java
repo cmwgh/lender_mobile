@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -42,6 +44,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder>{
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         final Item singleItem = listItems.get(position);
+        //Bitmap bitmap = BitmapFactory.decodeFile("/storage/emulated/0/Android/data/net.christopherwhite.lender.lender/files/Pictures/JPEG_20190304_221036_1248494719.jpg");
         holder.name.setText(singleItem.getItemName());
         holder.editProduct.setOnClickListener(new View.OnClickListener() {
             @Override
