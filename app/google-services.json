@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "448750735458",
+    "firebase_url": "https://lender-e3258.firebaseio.com",
+    "project_id": "lender-e3258",
+    "storage_bucket": "lender-e3258.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:448750735458:android:7f979204b7c06ef2",
+        "android_client_info": {
+          "package_name": "net.christopherwhite.lender.lender"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "448750735458-g3rq9nqh2c7g347tum7b61tuef5218vo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.christopherwhite.lender.lender",
+            "certificate_hash": "94a549d271ee7eb9e2969b4cf5ae0fb7dff01224"
+          }
+        },
+        {
+          "client_id": "448750735458-m2r6m80mmrus00hohdop40hqg224l1lq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6gPNvOSyTCxWqoX-UpnSnXd_-OZiehZU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "448750735458-m2r6m80mmrus00hohdop40hqg224l1lq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

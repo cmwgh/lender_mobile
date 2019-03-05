@@ -7,6 +7,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,7 +19,7 @@ import java.util.List;
 public class ItemsDBHandler extends SQLiteOpenHelper {
 
     //information of database
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "itemsDB.db";
     public static final String TABLE_NAME = "Item";
     public static final String COLUMN_ID = "ItemID";
@@ -77,15 +80,35 @@ public class ItemsDBHandler extends SQLiteOpenHelper {
     }
 
     public List<Item> loadAllHandler() {
+        JSONArray jsonResultSet     = new JSONArray();
         List<Item> items = new ArrayList<>();
         String query = "Select * FROM " + TABLE_NAME + " WHERE " + COLUMN_ARCHIVE + " = 0";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Item item = new Item();
+
         if(cursor.moveToFirst()){
             do {
+                JSONObject rowObject = new JSONObject();
                 int id = Integer.parseInt(cursor.getString(0));
+                try {
+                    rowObject.put(cursor.getColumnName(1), cursor.getString(1));
+                    rowObject.put(cursor.getColumnName(2), cursor.getString(2));
+                    rowObject.put(cursor.getColumnName(3), cursor.getString(3));
+                    rowObject.put(cursor.getColumnName(4), cursor.getString(4));
+                    rowObject.put(cursor.getColumnName(5), cursor.getString(5));
+                    rowObject.put(cursor.getColumnName(6), cursor.getString(6));
+                    rowObject.put(cursor.getColumnName(7), cursor.getString(7));
+                    rowObject.put(cursor.getColumnName(8), cursor.getString(8));
+                    rowObject.put(cursor.getColumnName(9), cursor.getString(9));
+
+                }
+                catch (Exception e){
+                    Log.d("TAG_NAME", e.getMessage()  );
+                }
+                jsonResultSet.put(rowObject);
+
                 String name = cursor.getString(1);
                 String description = cursor.getString(2);
                 String image = cursor.getString(3);
@@ -108,6 +131,8 @@ public class ItemsDBHandler extends SQLiteOpenHelper {
                 items.add(new Item(id, name, description, image, borrowerName, borrowerEmail, dateLent, dateReturn, verify, archive));
             }while (cursor.moveToNext());
         }        cursor.close();
+        Log.d("sql list: ", String.valueOf(items.size()));
+        Log.d("json list: ", jsonResultSet.toString() );
         db.close();
         return items;
     }

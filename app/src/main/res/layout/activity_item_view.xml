@@ -17,6 +17,7 @@
     tools:context="net.christopherwhite.lender.lender.ItemViewActivity">
 
     <android.support.v7.widget.RecyclerView
+        android:paddingTop="?attr/actionBarSize"
         android:id="@+id/product_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -15,14 +15,6 @@
     android:background="@color/colorWhite"
     android:padding="4dp"
     tools:context="net.christopherwhite.lender.lender.ArchivedItemsViewActivity">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/archived_items_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingBottom="8dp"
-        android:scrollbars="none" />
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
@@ -36,6 +28,16 @@
             app:layout_scrollFlags="scroll|enterAlways"
             />
     </android.support.design.widget.AppBarLayout>
+    <android.support.v7.widget.RecyclerView
+        android:paddingTop="?attr/actionBarSize"
+        android:id="@+id/archived_items_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:scrollbars="none"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
 
 </FrameLayout>
     <android.support.design.widget.NavigationView
